@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Info, TrendingUp, Cloud, Users } from 'lucide-react';
 import { storage } from '@/lib/storage';
-import { mockMedicines, generateForecast } from '@/data/mockData';
+import { mockMedicines, generateForecast, generateHistoricalSales } from '@/data/mockData';
 import { Medicine } from '@/types';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
 import {
@@ -38,6 +38,24 @@ const Forecasting = () => {
 
   const selectedMedicine = inventory.find(m => m.medicine_id === selectedMedicineId);
   const forecastData = selectedMedicine ? generateForecast(selectedMedicine) : [];
+  const historicalData = selectedMedicine ? generateHistoricalSales(selectedMedicine, 30) : [];
+  
+  const combinedChartData = [
+    ...historicalData.map(h => ({
+      date: h.date,
+      actual: h.sales,
+      predicted: null,
+      lower: null,
+      upper: null,
+    })),
+    ...forecastData.map(f => ({
+      date: f.date,
+      actual: null,
+      predicted: f.predicted,
+      lower: f.lower,
+      upper: f.upper,
+    })),
+  ];
 
   const predictedDemand7d = forecastData.slice(0, 7).reduce((sum, f) => sum + f.predicted, 0);
   const currentStock = selectedMedicine?.quantity || 0;
@@ -148,13 +166,13 @@ const Forecasting = () => {
             </Card>
           </div>
 
-          {/* Forecast Chart */}
+          {/* Forecast Chart with Historical Data */}
           <Card className="shadow-medium">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle>14-Day Demand Forecast</CardTitle>
-                  <CardDescription>Predicted daily consumption with confidence bands</CardDescription>
+                  <CardTitle>Historical & 14-Day Forecast</CardTitle>
+                  <CardDescription>Past 30 days actual sales + predicted demand with confidence intervals</CardDescription>
                 </div>
                 <Badge variant={
                   forecastData[0]?.confidence === 'High' ? 'default' :
@@ -166,7 +184,7 @@ const Forecasting = () => {
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={400}>
-                <AreaChart data={forecastData}>
+                <AreaChart data={combinedChartData}>
                   <defs>
                     <linearGradient id="colorPredicted" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
@@ -203,10 +221,22 @@ const Forecasting = () => {
                   />
                   <Line
                     type="monotone"
+                    dataKey="actual"
+                    stroke="hsl(var(--success))"
+                    strokeWidth={2}
+                    dot={false}
+                    name="Actual Sales"
+                    connectNulls={false}
+                  />
+                  <Line
+                    type="monotone"
                     dataKey="predicted"
                     stroke="hsl(var(--primary))"
                     strokeWidth={3}
+                    strokeDasharray="5 5"
                     dot={{ fill: 'hsl(var(--primary))', r: 4 }}
+                    name="Predicted Sales"
+                    connectNulls={false}
                   />
                 </AreaChart>
               </ResponsiveContainer>

@@ -49,3 +49,33 @@ export interface WeatherData {
   humidity: number;
   searchTrend: number;
 }
+
+export interface Vendor {
+  id: string;
+  name: string;
+  location: string;
+  lat: number;
+  lng: number;
+  distance: number;
+  costPerUnit: number;
+  availability: number;
+  reliability: number;
+  deliveryTimeHrs: number;
+  phone: string;
+}
+
+export interface Order {
+  id: string;
+  date: string;
+  medicine: string;
+  totalQuantity: number;
+  vendors: Array<{
+    vendorId: string;
+    vendorName: string;
+    quantity: number;
+    cost: number;
+  }>;
+  status: 'Pending' | 'In Transit' | 'Delivered' | 'Cancelled';
+  totalCost: number;
+  estimatedDeliveryHrs: number;
+}

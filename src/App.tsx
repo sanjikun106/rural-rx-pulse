@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import Inventory from "./pages/Inventory";
 import Forecasting from "./pages/Forecasting";
 import Network from "./pages/Network";
+import Orders from "./pages/Orders";
 import Alerts from "./pages/Alerts";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
@@ -26,6 +27,7 @@ const App = () => (
             <Route path="/inventory" element={<Inventory />} />
             <Route path="/forecasting" element={<Forecasting />} />
             <Route path="/network" element={<Network />} />
+            <Route path="/orders" element={<Orders />} />
             <Route path="/alerts" element={<Alerts />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<NotFound />} />

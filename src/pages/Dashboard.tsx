@@ -2,15 +2,16 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Package, AlertTriangle, Users, TrendingUp, Search } from 'lucide-react';
+import { Package, AlertTriangle, Users, TrendingUp, Search, ShoppingCart } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { storage } from '@/lib/storage';
 import { mockMedicines, mockAlerts, generateForecast } from '@/data/mockData';
 import { Medicine } from '@/types';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [inventory, setInventory] = useState<Medicine[]>([]);
   const [selectedMedicine, setSelectedMedicine] = useState<Medicine | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -136,9 +137,25 @@ const Dashboard = () => {
                           )}
                         </div>
                         <p className="text-sm text-muted-foreground">{medicine.brand} • {medicine.form}</p>
-                        <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
-                          <span>Stock: {medicine.quantity} {medicine.unit}</span>
-                          <span>Daily: {medicine.avg_daily_sales}</span>
+                        <div className="flex items-center justify-between gap-4 mt-2">
+                          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                            <span>Stock: {medicine.quantity} {medicine.unit}</span>
+                            <span>Daily: {medicine.avg_daily_sales}</span>
+                          </div>
+                          {isLowStock && (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                navigate('/orders');
+                              }}
+                              className="text-xs h-7"
+                            >
+                              <ShoppingCart className="h-3 w-3 mr-1" />
+                              Reorder
+                            </Button>
+                          )}
                         </div>
                       </div>
                       <div className="text-right">

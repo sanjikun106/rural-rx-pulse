@@ -1,4 +1,4 @@
-import { Medicine, Pharmacy, ForecastData, Alert, WeatherData } from '@/types';
+import { Medicine, Pharmacy, ForecastData, Alert, WeatherData, Vendor, Order } from '@/types';
 
 export const mockMedicines: Medicine[] = [
   {
@@ -218,3 +218,137 @@ export const mockWeatherData: WeatherData[] = Array.from({ length: 90 }, (_, i) 
   humidity: 60 + Math.sin(i / 7) * 20 + (Math.random() - 0.5) * 10,
   searchTrend: 50 + Math.sin(i / 5) * 30 + (Math.random() - 0.5) * 20,
 }));
+
+export const mockVendors: Vendor[] = [
+  {
+    id: 'V001',
+    name: 'Medico Distributors',
+    location: 'Pune City',
+    lat: 18.5204,
+    lng: 73.8567,
+    distance: 12.5,
+    costPerUnit: 22,
+    availability: 500,
+    reliability: 4.5,
+    deliveryTimeHrs: 2.5,
+    phone: '+91-9876543210',
+  },
+  {
+    id: 'V002',
+    name: 'PharmaNet Supplies',
+    location: 'Mumbai',
+    lat: 19.0760,
+    lng: 72.8777,
+    distance: 25.0,
+    costPerUnit: 20,
+    availability: 800,
+    reliability: 4.0,
+    deliveryTimeHrs: 4.0,
+    phone: '+91-9876543211',
+  },
+  {
+    id: 'V003',
+    name: 'HealthCare Wholesale',
+    location: 'Nashik',
+    lat: 19.9975,
+    lng: 73.7898,
+    distance: 45.3,
+    costPerUnit: 18,
+    availability: 1200,
+    reliability: 4.8,
+    deliveryTimeHrs: 6.0,
+    phone: '+91-9876543212',
+  },
+  {
+    id: 'V004',
+    name: 'MediSource India',
+    location: 'Aurangabad',
+    lat: 19.8762,
+    lng: 75.3433,
+    distance: 32.8,
+    costPerUnit: 24,
+    availability: 300,
+    reliability: 3.8,
+    deliveryTimeHrs: 5.5,
+    phone: '+91-9876543213',
+  },
+  {
+    id: 'V005',
+    name: 'SwiftMed Logistics',
+    location: 'Satara',
+    lat: 17.6869,
+    lng: 73.9896,
+    distance: 18.5,
+    costPerUnit: 26,
+    availability: 450,
+    reliability: 4.2,
+    deliveryTimeHrs: 3.0,
+    phone: '+91-9876543214',
+  },
+];
+
+export const mockOrders: Order[] = [
+  {
+    id: 'O001',
+    date: '2025-10-25',
+    medicine: 'Paracetamol',
+    totalQuantity: 300,
+    vendors: [
+      { vendorId: 'V001', vendorName: 'Medico Distributors', quantity: 300, cost: 6600 },
+    ],
+    status: 'Delivered',
+    totalCost: 6600,
+    estimatedDeliveryHrs: 2.5,
+  },
+  {
+    id: 'O002',
+    date: '2025-10-28',
+    medicine: 'Amoxicillin',
+    totalQuantity: 500,
+    vendors: [
+      { vendorId: 'V002', vendorName: 'PharmaNet Supplies', quantity: 300, cost: 6000 },
+      { vendorId: 'V003', vendorName: 'HealthCare Wholesale', quantity: 200, cost: 3600 },
+    ],
+    status: 'In Transit',
+    totalCost: 9600,
+    estimatedDeliveryHrs: 4.0,
+  },
+  {
+    id: 'O003',
+    date: '2025-10-20',
+    medicine: 'Cetirizine',
+    totalQuantity: 200,
+    vendors: [
+      { vendorId: 'V005', vendorName: 'SwiftMed Logistics', quantity: 200, cost: 5200 },
+    ],
+    status: 'Delivered',
+    totalCost: 5200,
+    estimatedDeliveryHrs: 3.0,
+  },
+];
+
+export const calculateVendorScore = (vendor: Vendor): number => {
+  return (
+    vendor.reliability * 2 +
+    1 / (vendor.distance / 10) +
+    vendor.availability / 100 -
+    vendor.costPerUnit / 50
+  );
+};
+
+export const generateHistoricalSales = (medicine: Medicine, days: number = 30): Array<{ date: string; sales: number }> => {
+  const historicalData: Array<{ date: string; sales: number }> = [];
+  const baseValue = medicine.avg_daily_sales;
+  
+  for (let i = days; i >= 1; i--) {
+    const randomFactor = 0.7 + Math.random() * 0.6;
+    const sales = Math.round(baseValue * randomFactor * (1 + Math.sin(i / 4) * 0.3));
+    
+    historicalData.push({
+      date: new Date(Date.now() - i * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      sales: Math.max(0, sales),
+    });
+  }
+  
+  return historicalData;
+};
