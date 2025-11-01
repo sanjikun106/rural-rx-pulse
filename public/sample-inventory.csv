@@ -1,0 +1,13 @@
+medicine_id,name,brand,form,quantity,unit,expiry_date,batch,last_sold_date,avg_daily_sales,category
+M009,Aspirin,Disprin,Tablet,200,tablets,2026-12-31,B901,2025-10-28,7,Antipyretic
+M010,Ciprofloxacin,Cifran,Tablet,50,tablets,2026-04-15,B902,2025-10-26,2,Antibiotic
+M011,Loperamide,Imodium,Capsule,40,capsules,2025-11-30,B903,2025-10-27,3,Antidiarrheal
+M012,Salbutamol,Asthalin,Inhaler,20,inhalers,2026-07-20,B904,2025-10-25,4,Bronchodilator
+M013,Ranitidine,Aciloc,Tablet,90,tablets,2026-02-28,B905,2025-10-28,5,Antacid
+M014,Diclofenac,Voveran,Tablet,75,tablets,2026-06-15,B906,2025-10-27,6,Anti-inflammatory
+M015,Loratadine,Lorfast,Tablet,60,tablets,2026-10-10,B907,2025-10-26,3,Antihistamine
+M016,Prednisolone,Wysolone,Tablet,30,tablets,2025-12-20,B908,2025-10-24,2,Corticosteroid
+M017,Insulin,Lantus,Injection,15,vials,2026-03-31,B909,2025-10-28,1,Antidiabetic
+M018,Amlodipine,Amlodac,Tablet,100,tablets,2026-08-25,B910,2025-10-27,8,Antihypertensive
+M019,Cough Syrup,Benadryl,Syrup,35,bottles,2025-11-15,B911,2025-10-28,5,Cough Suppressant
+M020,Multivitamin,Supradyn,Tablet,120,tablets,2027-01-10,B912,2025-10-26,4,Supplement
