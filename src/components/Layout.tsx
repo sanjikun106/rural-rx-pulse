@@ -37,7 +37,7 @@ const Layout = ({ children }: LayoutProps) => {
                 <Package className="h-6 w-6 text-primary-foreground" />
               </div>
               <div className="hidden sm:block">
-                <h1 className="text-xl font-bold text-foreground">MediLink AI</h1>
+                <h1 className="text-xl font-bold text-foreground">OptimAize</h1>
                 <p className="text-xs text-muted-foreground">{pharmacyName}</p>
               </div>
             </Link>
