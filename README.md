@@ -38,6 +38,7 @@ MediLink AI transforms isolated pharmacies into a **coordinated, predictive, lif
 ### Layer 2: The Vendor Optimization Engine ("The Broker")
 **Multi-objective optimization** balancing cost, delivery time, distance, and preference:
 
+**File:** `optimizationfinal.ipynb`
 ```
 Score = w1(Cost) + w2(Delivery Time) + w3(Distance) + w4(Preference)
 ```
