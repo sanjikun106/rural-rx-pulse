@@ -1,4 +1,4 @@
-# MediLink AI: From Supply Chain Chaos to Life-Saving Intelligence
+# OptimAize: From Supply Chain Chaos to Life-Saving Intelligence
 
 > **Transforming 95,000 rural pharmacies into an intelligent, life-saving network using AI-powered forecasting and vendor optimization**
 
@@ -23,7 +23,7 @@ Every **4 seconds**, someone in rural India leaves a pharmacy empty-handed. This
 
 ## ✨ Our Solution: Three-Layer AI Architecture
 
-MediLink AI transforms isolated pharmacies into a **coordinated, predictive, life-saving network** through three intelligent layers:
+OptimAize transforms isolated pharmacies into a **coordinated, predictive, life-saving network** through three intelligent layers:
 
 ### Layer 1: The Demand Forecasting Engine ("The Oracle") 
 **85-92% Accuracy** through ensemble ML models:
@@ -66,13 +66,13 @@ Score = w1(Cost) + w2(Delivery Time) + w3(Distance) + w4(Preference)
 
 ---
 
-## 🏆 Why MediLink AI Stands Out
+## 🏆 Why OptimAize Stands Out
 
 ### 1. **Impact** ⭐⭐⭐⭐⭐
 
 #### Quantified Per-Pharmacy Impact (Annual)
 
-| Metric | Current State | With MediLink AI | Improvement |
+| Metric | Current State | With OptimAize | Improvement |
 |--------|--------------|------------------|-------------|
 | **Stockout Rate** | 25-30% | < 5% | **80-85% reduction** |
 | **Inventory Waste** | ₹1.5-2 Lakhs | < ₹30,000 | **85% reduction** |
@@ -191,7 +191,7 @@ This MVP demonstrates:
 
 #### Competitive Differentiation
 
-| Feature | Competitors | MediLink AI |
+| Feature | Competitors | OptimAize |
 |---------|------------|-------------|
 | **Forecasting** | Basic/None | **Ensemble ML (85-92% accuracy)** |
 | **Vendor Optimization** | Manual/Single vendor | **Multi-objective optimization** |
@@ -275,7 +275,7 @@ Use `public/sample-inventory.csv` to test bulk upload functionality.
 
 ## 💡 The Impact Trifecta
 
-MediLink AI delivers a rare **triple win**:
+OptimAize delivers a rare **triple win**:
 
 ### For Patients 🏥
 - **Continuous access** to life-saving medicines
@@ -352,11 +352,6 @@ We're not just building a company—**we're building a healthier, more resilient
 
 ---
 
-## 📞 Contact & Links
-
-- **Live Demo**: [Your deployment URL]
-- **Video Demo**: [Your demo video link]
-- **Team**: [Your team info]
 
 ---
 
