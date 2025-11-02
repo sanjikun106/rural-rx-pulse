@@ -288,6 +288,93 @@ const Orders = () => {
             </div>
           </div>
 
+          {/* Vendor Optimization Engine */}
+          <Card className="shadow-medium border-primary/50 bg-gradient-to-br from-primary/5 to-secondary/5">
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <TrendingUp className="h-5 w-5 text-primary" />
+                <CardTitle>AI Vendor Optimization Engine</CardTitle>
+              </div>
+              <CardDescription>Multi-objective scoring algorithm for optimal order planning</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="p-4 rounded-lg bg-card border">
+                <h4 className="font-semibold mb-3 flex items-center gap-2">
+                  <Package className="h-4 w-4 text-primary" />
+                  Example: Critical Antibiotic Fulfillment
+                </h4>
+                <div className="space-y-3 text-sm">
+                  <div className="flex items-start gap-2">
+                    <Badge variant="outline" className="mt-0.5">Scenario</Badge>
+                    <p className="flex-1">Demand Target: 120 units. Preference: Medicine B (brand), Acceptable: Medicine A (generic substitute)</p>
+                  </div>
+                  
+                  <div className="flex items-start gap-2">
+                    <Badge variant="secondary" className="mt-0.5">Analysis</Badge>
+                    <p className="flex-1">AI evaluates all vendors for both preferred and substitute medicines, considering MOQ constraints</p>
+                  </div>
+                  
+                  <div className="p-3 rounded-lg bg-success/10 border border-success/30">
+                    <p className="font-medium text-success mb-2">Generated Order Plan:</p>
+                    <div className="space-y-1.5 text-xs">
+                      <div className="flex justify-between">
+                        <span>• Vendor 7 (Medicine B, preferred)</span>
+                        <span className="font-semibold">15 units</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>• Vendor 32 (Medicine B, preferred)</span>
+                        <span className="font-semibold">10 units</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>• Vendor 8 (Medicine A, substitute)</span>
+                        <span className="font-semibold">30 units</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>• Vendor 98 (Medicine A, substitute)</span>
+                        <span className="font-semibold">35 units</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>• Vendor 73 (Medicine A, substitute)</span>
+                        <span className="font-semibold">30 units</span>
+                      </div>
+                      <div className="pt-2 mt-2 border-t border-success/30 flex justify-between font-bold">
+                        <span>Total Fulfilled</span>
+                        <span className="text-success">120 units ✓</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="p-2 rounded bg-muted/50">
+                      <p className="text-xs text-muted-foreground mb-1">Optimization Goals</p>
+                      <ul className="text-xs space-y-0.5">
+                        <li>✓ Price minimization</li>
+                        <li>✓ Delivery time optimization</li>
+                        <li>✓ Preference weighting</li>
+                        <li>✓ MOQ compliance (10 units)</li>
+                      </ul>
+                    </div>
+                    <div className="p-2 rounded bg-muted/50">
+                      <p className="text-xs text-muted-foreground mb-1">Trade-offs Balanced</p>
+                      <ul className="text-xs space-y-0.5">
+                        <li>• Cost vs Speed</li>
+                        <li>• Brand vs Generic</li>
+                        <li>• Single vs Multi-vendor</li>
+                        <li>• Risk diversification</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-3 rounded-lg bg-muted/50 text-sm">
+                <p className="text-muted-foreground">
+                  <strong className="text-foreground">Why AI?</strong> Manual calculation of multi-vendor, multi-medicine allocation across dozens of vendors is practically impossible. The optimizer runs in real-time, handling constraints and preferences to find the optimal blend every time.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Order Summary */}
           {selectedVendors.size > 0 && (
             <Card className="shadow-medium border-primary/50">

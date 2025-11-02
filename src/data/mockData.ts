@@ -150,24 +150,43 @@ export const mockPharmacies: Pharmacy[] = [
   },
 ];
 
-export const generateForecast = (medicine: Medicine): ForecastData[] => {
+export const generateForecast = (medicine: Medicine, days: number = 30): ForecastData[] => {
   const forecast: ForecastData[] = [];
-  const baseValue = medicine.avg_daily_sales;
-  
-  for (let i = 1; i <= 14; i++) {
-    const randomFactor = 0.8 + Math.random() * 0.4;
-    const predicted = Math.round(baseValue * randomFactor * (1 + Math.sin(i / 3) * 0.2));
-    const variance = predicted * 0.2;
+  const baselineDemand = medicine.avg_daily_sales || 5;
+  const today = new Date();
+
+  for (let i = 1; i <= days; i++) {
+    const date = new Date(today);
+    date.setDate(date.getDate() + i);
+
+    // Simulate day-of-week pattern (weekday vs weekend)
+    const dayOfWeek = date.getDay();
+    const weekendFactor = dayOfWeek === 0 || dayOfWeek === 6 ? 0.8 : 1.1;
+
+    // Simulate seasonality/random noise
+    const randomNoise = 0.9 + Math.random() * 0.3;
     
+    // Weather signal multiplier (antipyretics spike with cold/flu season)
+    const weatherMultiplier = medicine.category === 'Antipyretic' ? 1.2 : 1.0;
+
+    // Disease outbreak signal
+    const outbreakMultiplier = medicine.category === 'Antipyretic' && i <= 10 ? 1.3 : 1.0;
+
+    const predicted = baselineDemand * weekendFactor * randomNoise * weatherMultiplier * outbreakMultiplier;
+    const historyBased = baselineDemand * weekendFactor * randomNoise;
+    const lower = predicted * 0.8;
+    const upper = predicted * 1.3;
+
     forecast.push({
-      date: new Date(Date.now() + i * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-      predicted,
-      lower: Math.round(predicted - variance),
-      upper: Math.round(predicted + variance),
-      confidence: variance < predicted * 0.15 ? 'High' : variance < predicted * 0.25 ? 'Medium' : 'Low',
+      date: date.toISOString().split('T')[0],
+      predicted: Math.round(predicted),
+      historyBased: Math.round(historyBased),
+      lower: Math.round(lower),
+      upper: Math.round(upper),
+      confidence: i <= 7 ? 'High' : i <= 10 ? 'Medium' : 'Low',
     });
   }
-  
+
   return forecast;
 };
 
@@ -336,7 +355,7 @@ export const calculateVendorScore = (vendor: Vendor): number => {
   );
 };
 
-export const generateHistoricalSales = (medicine: Medicine, days: number = 30): Array<{ date: string; sales: number }> => {
+export const generateHistoricalSales = (medicine: Medicine, days: number = 90): Array<{ date: string; sales: number }> => {
   const historicalData: Array<{ date: string; sales: number }> = [];
   const baseValue = medicine.avg_daily_sales;
   

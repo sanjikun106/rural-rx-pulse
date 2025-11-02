@@ -37,29 +37,27 @@ const Forecasting = () => {
   }, []);
 
   const selectedMedicine = inventory.find(m => m.medicine_id === selectedMedicineId);
-  const forecastData = selectedMedicine ? generateForecast(selectedMedicine) : [];
-  const historicalData = selectedMedicine ? generateHistoricalSales(selectedMedicine, 30) : [];
+  const forecastData = selectedMedicine ? generateForecast(selectedMedicine, 30) : [];
+  const historicalData = selectedMedicine ? generateHistoricalSales(selectedMedicine, 90) : [];
   
   const combinedChartData = [
     ...historicalData.map(h => ({
       date: h.date,
       actual: h.sales,
+      historyBased: null,
       predicted: null,
-      lower: null,
-      upper: null,
     })),
     ...forecastData.map(f => ({
       date: f.date,
       actual: null,
+      historyBased: f.historyBased,
       predicted: f.predicted,
-      lower: f.lower,
-      upper: f.upper,
     })),
   ];
 
-  const predictedDemand7d = forecastData.slice(0, 7).reduce((sum, f) => sum + f.predicted, 0);
+  const predictedDemand30d = forecastData.reduce((sum, f) => sum + f.predicted, 0);
   const currentStock = selectedMedicine?.quantity || 0;
-  const recommendedReorder = Math.max(0, Math.ceil(predictedDemand7d - currentStock + selectedMedicine?.avg_daily_sales * 7 || 0));
+  const recommendedReorder = Math.max(0, Math.ceil(predictedDemand30d - currentStock + selectedMedicine?.avg_daily_sales * 7 || 0));
 
   const depletionDate = forecastData.find((f, idx) => {
     const cumulative = forecastData.slice(0, idx + 1).reduce((sum, item) => sum + item.predicted, 0);
@@ -76,6 +74,13 @@ const Forecasting = () => {
       name: 'Seasonal Pattern',
       impact: 'Medium',
       description: 'Weekly demand variations detected',
+    },
+    {
+      name: 'Disease Outbreak',
+      impact: selectedMedicine?.category === 'Antipyretic' ? 'High' : 'Low',
+      description: selectedMedicine?.category === 'Antipyretic'
+        ? 'Early signals detected via Google Trends (search interest for symptoms) which the model uses to adjust short-term demand'
+        : 'No outbreak signals detected for this medicine category',
     },
     {
       name: 'Weather Signal',
@@ -122,11 +127,11 @@ const Forecasting = () => {
             <Card className="shadow-soft">
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
-                  7-Day Predicted Demand
+                  30-Day Predicted Demand
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{Math.round(predictedDemand7d)}</div>
+                <div className="text-2xl font-bold">{Math.round(predictedDemand30d)}</div>
                 <p className="text-xs text-muted-foreground mt-1">
                   {selectedMedicine.unit} expected
                 </p>
@@ -171,26 +176,28 @@ const Forecasting = () => {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle>Historical & 14-Day Forecast</CardTitle>
-                  <CardDescription>Past 30 days actual sales + predicted demand with confidence intervals</CardDescription>
+                  <CardTitle>Historical & 30-Day Forecast</CardTitle>
+                  <CardDescription>Past 90 days actual usage + next 30 days predicted demand</CardDescription>
                 </div>
-                <Badge variant={
-                  forecastData[0]?.confidence === 'High' ? 'default' :
-                  forecastData[0]?.confidence === 'Medium' ? 'secondary' : 'outline'
-                }>
-                  {forecastData[0]?.confidence} Confidence
-                </Badge>
               </div>
             </CardHeader>
             <CardContent>
+              <div className="mb-4 flex gap-4 text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-0.5 bg-success"></div>
+                  <span>Past Usage (90d)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-0.5 bg-destructive"></div>
+                  <span>History-Based Forecast</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-0.5 bg-primary"></div>
+                  <span>AI-Predicted Forecast</span>
+                </div>
+              </div>
               <ResponsiveContainer width="100%" height={400}>
-                <AreaChart data={combinedChartData}>
-                  <defs>
-                    <linearGradient id="colorPredicted" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
+                <LineChart data={combinedChartData}>
                   <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
                   <XAxis
                     dataKey="date"
@@ -205,40 +212,34 @@ const Forecasting = () => {
                     }}
                     labelFormatter={(date) => new Date(date).toLocaleDateString()}
                   />
-                  <Area
-                    type="monotone"
-                    dataKey="upper"
-                    stroke="none"
-                    fill="hsl(var(--primary))"
-                    fillOpacity={0.1}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="lower"
-                    stroke="none"
-                    fill="hsl(var(--background))"
-                    fillOpacity={1}
-                  />
                   <Line
                     type="monotone"
                     dataKey="actual"
                     stroke="hsl(var(--success))"
                     strokeWidth={2}
                     dot={false}
-                    name="Actual Sales"
+                    name="Past Usage"
+                    connectNulls={false}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="historyBased"
+                    stroke="hsl(var(--destructive))"
+                    strokeWidth={2}
+                    dot={false}
+                    name="History-Based"
                     connectNulls={false}
                   />
                   <Line
                     type="monotone"
                     dataKey="predicted"
                     stroke="hsl(var(--primary))"
-                    strokeWidth={3}
-                    strokeDasharray="5 5"
-                    dot={{ fill: 'hsl(var(--primary))', r: 4 }}
-                    name="Predicted Sales"
+                    strokeWidth={2}
+                    dot={false}
+                    name="AI Predicted"
                     connectNulls={false}
                   />
-                </AreaChart>
+                </LineChart>
               </ResponsiveContainer>
             </CardContent>
           </Card>
@@ -299,7 +300,7 @@ const Forecasting = () => {
                       <h4 className="font-semibold">Reorder Recommendation Breakdown</h4>
                       <div className="space-y-1 text-sm">
                         <p>• Current stock: {currentStock} {selectedMedicine.unit}</p>
-                        <p>• 7-day forecast: {Math.round(predictedDemand7d)} {selectedMedicine.unit}</p>
+                        <p>• 30-day forecast: {Math.round(predictedDemand30d)} {selectedMedicine.unit}</p>
                         <p>• Safety buffer: {Math.round(selectedMedicine.avg_daily_sales * 7)} {selectedMedicine.unit}</p>
                         <p className="pt-2 border-t">
                           <strong>Recommended: {recommendedReorder} {selectedMedicine.unit}</strong>

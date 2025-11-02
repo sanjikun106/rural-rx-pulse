@@ -26,6 +26,7 @@ export interface Pharmacy {
 export interface ForecastData {
   date: string;
   predicted: number;
+  historyBased?: number;
   lower: number;
   upper: number;
   confidence: 'High' | 'Medium' | 'Low';
