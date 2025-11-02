@@ -80,3 +80,22 @@ export interface Order {
   totalCost: number;
   estimatedDeliveryHrs: number;
 }
+
+export interface BillItem {
+  id: string;
+  medicineName: string;
+  quantity: number;
+  pricePerUnit: number;
+  totalPrice: number;
+}
+
+export interface Bill {
+  id: string;
+  billNumber: string;
+  date: string;
+  customerName?: string;
+  items: BillItem[];
+  subtotal: number;
+  tax: number;
+  totalAmount: number;
+}

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Bell, LayoutDashboard, Package, TrendingUp, MapPin, Settings, Menu, X, ShoppingCart } from 'lucide-react';
+import { Bell, LayoutDashboard, Package, TrendingUp, MapPin, Settings, Menu, X, ShoppingCart, Receipt } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { storage } from '@/lib/storage';
@@ -23,6 +23,7 @@ const Layout = ({ children }: LayoutProps) => {
     { name: 'Forecasting', href: '/forecasting', icon: TrendingUp },
     { name: 'Network', href: '/network', icon: MapPin },
     { name: 'Orders', href: '/orders', icon: ShoppingCart },
+    { name: 'Billing', href: '/billing', icon: Receipt },
     { name: 'Alerts', href: '/alerts', icon: Bell, badge: unreadCount },
   ];
 

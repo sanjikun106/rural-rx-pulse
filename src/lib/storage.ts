@@ -1,12 +1,13 @@
-import { Medicine, Alert, Order } from '@/types';
+import { Medicine, Alert, Order, Bill } from '@/types';
 import { mockMedicines, mockAlerts, mockOrders } from '@/data/mockData';
 
 const STORAGE_KEYS = {
-  INVENTORY: 'medilink_inventory',
-  ALERTS: 'medilink_alerts',
-  PHARMACY_NAME: 'medilink_pharmacy_name',
-  LANGUAGE: 'medilink_language',
-  ORDERS: 'medilink_orders',
+  INVENTORY: 'optimaize_inventory',
+  ALERTS: 'optimaize_alerts',
+  PHARMACY_NAME: 'optimaize_pharmacy_name',
+  LANGUAGE: 'optimaize_language',
+  ORDERS: 'optimaize_orders',
+  BILLS: 'optimaize_bills',
 };
 
 export const storage = {
@@ -58,6 +59,21 @@ export const storage = {
     orders.unshift(order);
     storage.setOrders(orders);
   },
+
+  getBills: (): Bill[] => {
+    const data = localStorage.getItem(STORAGE_KEYS.BILLS);
+    return data ? JSON.parse(data) : [];
+  },
+
+  setBills: (bills: Bill[]) => {
+    localStorage.setItem(STORAGE_KEYS.BILLS, JSON.stringify(bills));
+  },
+
+  addBill: (bill: Bill) => {
+    const bills = storage.getBills();
+    bills.unshift(bill);
+    storage.setBills(bills);
+  },
 };
 
 // Export individual functions for convenience
@@ -72,3 +88,6 @@ export const setLanguage = storage.setLanguage;
 export const getOrders = storage.getOrders;
 export const setOrders = storage.setOrders;
 export const addOrder = storage.addOrder;
+export const getBills = storage.getBills;
+export const setBills = storage.setBills;
+export const addBill = storage.addBill;
