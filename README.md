@@ -25,13 +25,14 @@ Every **4 seconds**, someone in rural India leaves a pharmacy empty-handed. This
 
 MediLink AI transforms isolated pharmacies into a **coordinated, predictive, life-saving network** through three intelligent layers:
 
-### Layer 1: The Demand Forecasting Engine ("The Oracle")
+### Layer 1: The Demand Forecasting Engine ("The Oracle") 
 **85-92% Accuracy** through ensemble ML models:
 
 - **Facebook Prophet**: Captures complex seasonality (flu spikes, monsoon patterns)
 - **ARIMA**: Models auto-regressive trends in medication sales
 - **Random Forest**: Incorporates external factors (weather, Google Trends, health bulletins)
 
+**File:** `forecasting_model.ipynb`
 **Example**: Predicts 40% spike in anti-fever medication 5 days before a monsoon-driven fever wave.
 
 ### Layer 2: The Vendor Optimization Engine ("The Broker")
